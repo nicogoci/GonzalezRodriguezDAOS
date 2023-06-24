@@ -82,7 +82,7 @@ public class VueloRestController {
 
 	/**
 	 * Busca un vuelo a partir de su nroVuelo
-	 * 	curl --location --request GET 'http://localhost:8081/vuelos/7778'
+	 * 	curl --location --request GET 'http://localhost:8081/vuelos/1216'
 	 * @param nroVuelo Numero de Vuelo
 	 * @return Vuelo encontrado o Not found en otro caso
 	 * @throws Excepcion 
@@ -108,7 +108,7 @@ public class VueloRestController {
 	 			--header 'Accept: application/json' 
 	  			--header 'Content-Type: application/json' 
 	 			--data-raw '{
-	 			    "nroVuelo": 1212,
+	 			    "nroVuelo": 1216,
 	 			    "timeVuelo": "1900-01-01T15:00",
 	 			    "nroFilas": 10,
 	 				"nroAsientos": 2,
@@ -163,7 +163,7 @@ public class VueloRestController {
 	
 	/**
 	 * Modifica un vuelo existente en la base de datos:
-	  			curl --location --request PUT 'http://localhost:8081/vuelos/1212' 
+	  			curl --location --request PUT 'http://localhost:8081/vuelos/1216' 
 	 			--header 'Accept: application/json' 
 	 			--header 'Content-Type: application/json' 
 	 			--data-raw '{
@@ -194,27 +194,28 @@ public class VueloRestController {
 	
 	/**
 	 * Cancelar el vuelo con el nroVuelo indicado
-	 * 	  curl --location --request DELETE 'http://localhost:8081/1212'
+	 * 	  curl --location --request DELETE 'http://localhost:8081/vuelos/1216'
 	 * @param nroVuelo Nro de vuelo a cancelar
 	 * @return ok en caso de cancelar exitosamente el vuelo, error en otro caso
 	 */
 	@DeleteMapping("/{nroVuelo}")
-	public ResponseEntity<String> cancelar(@RequestBody VueloForm form, @PathVariable Long nroVuelo) throws Excepcion
+	public ResponseEntity<Object> eliminar(@PathVariable Long nroVuelo)  throws Excepcion
 	{
 		Optional<Vuelo> rta = service.getById(nroVuelo);
 		if(!rta.isPresent())
-			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se encuentra el vuelo que desea modificar.");
+		{
+			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe un vuelo con ese dni");
+		}
 		else
 		{
-			Vuelo v = form.toPojo();
+			Vuelo v = rta.get();
 			v.setEstadoVuelo("cancelado"); 
 			System.out.print("Notificar a los usuarios que pertenecen a dicho vuelo");
 			service.update(v);
-			return ResponseEntity.ok().build();
-		}
+			return ResponseEntity.ok(buildResponse(v));
+		}	
 	}
-	
-	
+
 	
 	
 	/**
