@@ -9,8 +9,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Persona {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Persona {
 
 
 	@Id
