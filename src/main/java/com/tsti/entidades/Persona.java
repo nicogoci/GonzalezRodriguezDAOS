@@ -2,12 +2,15 @@ package com.tsti.entidades;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 @Entity
-public class Persona {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Persona {
 
 
 	@Id
