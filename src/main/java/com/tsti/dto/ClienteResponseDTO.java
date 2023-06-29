@@ -11,6 +11,7 @@ import com.tsti.entidades.Cliente;
  *
  */
 public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> {
+	
 
 	private Long dni;
 	private String apellido;

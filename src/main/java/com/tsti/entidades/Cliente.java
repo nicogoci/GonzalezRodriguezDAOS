@@ -1,5 +1,4 @@
 package com.tsti.entidades;
-
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -8,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 @Entity
 public class Cliente extends Persona{
 	@Id

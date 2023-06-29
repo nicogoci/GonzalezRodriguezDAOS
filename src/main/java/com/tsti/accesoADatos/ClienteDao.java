@@ -10,6 +10,8 @@ import com.tsti.entidades.Cliente;
 
 public interface ClienteDao  extends JpaRepository<Cliente, Long> {
 	
+	
+	
 	@Query("SELECT c FROM Cliente c WHERE c.nombre like '%?1%'")
 	Collection<Cliente> findClienteLike(String parte);
 	
