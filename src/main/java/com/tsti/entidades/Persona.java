@@ -28,6 +28,8 @@ public class Persona {
 	@ManyToOne
 	private Ciudad ciudad;
 	
+	
+	
 	public Long getDni() {
 		return dni;
 	}
@@ -46,15 +48,12 @@ public class Persona {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	
-	
-	@Override
-	public String toString() {
-		return dni+" - "+ nombre +" "+ apellido;
+	public String getEmail() {
+		return email;
 	}
-	
-	
+	public void setEmail(String email) {
+		this.email = email;
+	}	
 	
 	public Ciudad getCiudad() {
 		return ciudad;
@@ -62,6 +61,12 @@ public class Persona {
 	public void setCiudad(Ciudad ciudad) {
 		this.ciudad = ciudad;
 	}
+	@Override
+	public String toString() {
+		return "Persona [dni=" + dni + ", apellido=" + apellido + ", nombre=" + nombre + ", email=" + email
+				+ ", ciudad=" + ciudad + "]";
+	}
+	
 	
 	
 }

@@ -24,13 +24,13 @@ public interface ClienteService {
 
 	/**
 	 * Actualiza datos de un Cliente
-	 * @param p
+	 * @param c
 	 */
 	public void update(Cliente c);
 
 	/**
 	 * Inserta un nuevo Cliente
-	 * @param p
+	 * @param c
 	 * @throws Exception
 	 */
 	public void insert(Cliente c) throws Exception;

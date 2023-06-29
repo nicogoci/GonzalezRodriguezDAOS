@@ -57,7 +57,7 @@ public class ClienteRestController {
 	/**
 	 * Permite filtrar clientes. 
 	 * Ej1 curl --location --request GET 'http://localhost:8081/clientes?apellido=Perez&&nombre=Juan' Lista los clientes llamados Perez, Juan
-	 * Ej2 curl --location --request GET 'http://localhost:8081/clientes?apellido=Perez' Lista aquellos clientes de apellido Perez
+	 * Ej2 curl --location --request GET 'http://localhost:8081/clientes?apellido=perez' Lista aquellos clientes de apellido Perez
 	 * Ej3 curl --location --request GET 'http://localhost:8081/clientes'   Lista todas los clientes
 	 * @param apellido
 	 * @param nombre
@@ -83,7 +83,7 @@ public class ClienteRestController {
 
 	/**
 	 * Busca un cliente a partir de su dni
-	 * 	curl --location --request GET 'http://localhost:8081/cliente/27837171'
+	 * 	curl --location --request GET 'http://localhost:8081/clientes/27837171'
 	 * @param id DNI de el cliente buscado
 	 * @return Cliente encontrado o Not found en otro caso
 	 * @throws Excepcion 
@@ -105,15 +105,20 @@ public class ClienteRestController {
 	
 	/**
 	 * Inserta un nuevo cliente en la base de datos
-	 * 			curl --location --request POST 'http://localhost:8081/cliente' 
-	 *			--header 'Accept: application/json' 
-	 * 			--header 'Content-Type: application/json' 
-	 *			--data-raw '{
-	 *			    "dni": 27837171,
-	 *			    "apellido": "perez",
-	 *			    "nombre": "juan",
-	 *			    "idCiudad": 2
-	 *			}'
+	 * 			curl --location --request POST 'http://localhost:8081/clientes' 
+	 			--header 'Accept: application/json' 
+	  			--header 'Content-Type: application/json' 
+	 			--data-raw '{
+	 			    "dni": 27837171,
+	 			    "apellido": "perez",
+	 			    "nombre": "juan",
+	 			    "domicilio": "Ruperto 2020",
+	 			    "email": "rupertito@roro.com",
+	 			    "fechaDeNacimiento": "2000-01-01T15:00",
+	 			    "idCiudad": 2,
+	 			    "nroPasaporte": 3,
+	 			    "fechaVencimientoPasaporte": "2000-01-01T15:00"
+	 			}'
 	 * @param c Cliente  a insertar
 	 * @return Cliente insertado o error en otro caso
 	 * @throws Exception 
@@ -128,21 +133,22 @@ public class ClienteRestController {
 		}
 		
 		
-//		if(form.getDni()==null)
-//			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debe indicar un dni");
-//		else if(service.getById(form.getDni()).isPresent())
-//			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe un cliente con ese dni");
-//		else
-//		{
-			Cliente cl = form.toPojo();
-			Optional<Ciudad> c = ciudadService.getById(form.getIdCiudad());
-			if(c.isPresent())
-				cl.setCiudad(c.get());
+		if(form.getDni()==null) {
+			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debe indicar un dni");
+		}	
+			else if(service.getById(form.getDni()).isPresent())
+				return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe un cliente con ese dni");
 			else
-			{
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("02", "Ciudad Requerida", "La ciudad indicada no se encuentra en la base de datos."));
+				{
+					Cliente cl = form.toPojo();
+					Optional<Ciudad> c = ciudadService.getById(form.getIdCiudad());
+					if(c.isPresent())
+						cl.setCiudad(c.get());
+					else
+					{
+						return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("02", "Ciudad Requerida", "La ciudad indicada no se encuentra en la base de datos."));
 //				return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La ciudad indicada no se encuentra en la base de datos.");
-			}
+					}
 			
 			
 			
@@ -152,20 +158,21 @@ public class ClienteRestController {
 
 				return ResponseEntity.created(location).build();//201 (Recurso creado correctamente)
 		
-//		}
+	}
 
 	}
 	
 	/**
 	 * Modifica un cliente existente en la base de datos:
-	 * 			curl --location --request PUT 'http://localhost:8081/cliente/27837176' 
-	 *			--header 'Accept: application/json' 
-	 * 			--header 'Content-Type: application/json' 
-	 *			--data-raw '{
-	 *			    "apellido": "Perez",
-	 *			    "nombre": "Juan Martin"
-	 *			    "idCiudad": 1
-	 *			}'
+	 * 			curl --location --request PUT 'http://localhost:8081/clientes/27837173' 
+	 			--header 'Accept: application/json' 
+	  			--header 'Content-Type: application/json' 
+	 			--data-raw '{
+				    "apellido": "Perez",
+	 			    "nombre": "Juan Martin",
+				    "idCiudad": 1,
+				    "domicilio": "Ruperta 2020"
+	 			}'
 	 * @param cl Cliente a modificar
 	 * @return Cliente Editado o error en otro caso
 	 * @throws Excepcion 
@@ -179,15 +186,34 @@ public class ClienteRestController {
 			
 		else
 		{
-			Cliente cl = form.toPojo();
+			
+			Cliente cl = rta.get();
 			Optional<Ciudad> c = ciudadService.getById(form.getIdCiudad());
 			if(c.isPresent())
 				cl.setCiudad(c.get());
 			else
 				return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La ciudad indicada no se encuentra en la base de datos.");
 			
+			if(!(form.getApellido() == null))
+				cl.setApellido(form.getApellido());
+			if(!(form.getDomicilio() == null))
+				cl.setDomicilio(form.getDomicilio());
+			if(!(form.getEmail() == null))
+				cl.setEmail(form.getEmail());
+			if(!(form.getFechaDeNacimiento() == null))
+				cl.setFechaDeNacimiento(form.getFechaDeNacimiento());
+			if(!(form.getFechaVencimientoPasaporte() == null))
+				cl.setFechaVencimientoPasaporte(form.getFechaVencimientoPasaporte());
+			if(!(form.getNombre() == null))
+				cl.setNombre(form.getNombre());
+			if(!(form.getNroPasaporte() == null))
+				cl.setNroPasaporte(form.getNroPasaporte());
+			
+			
 			cl.setDni(dni);  //El dni es el identificador, con lo cual es el único dato que no permito modificar
+			
 			service.update(cl);
+			System.out.println(cl.toString());
 			return ResponseEntity.ok(buildResponse(cl));
 		}
 		

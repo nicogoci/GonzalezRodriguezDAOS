@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 
 import com.tsti.entidades.Cliente;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -20,7 +22,8 @@ public class ClienteForm {
 
     
 	@Id
-	@Size(min = 7000000,max = 1000000000, message = "El DNI no puede ser nulo")
+	@NotNull(message = "El DNI no puede ser nulo")
+	@Min( message = "Debe ser mayor a 7.000.000", value = 7000000)
 	private Long dni;
 	@NotNull(message = "El apellido no puede ser nulo")
 	@Size(min=2, max=30)
@@ -29,18 +32,18 @@ public class ClienteForm {
 	@Size(min=2, max=30)
 	private String nombre;
 	@NotNull(message = "El domicilio no puede ser nulo")
-	private Long idDomicilio;
+	private String domicilio;
 	@NotNull(message = "El email no puede ser nulo")
+	@Email(message = "Debe ser un email")
 	private String email;
 	@NotNull(message = "La fecha de nacimiento no puede ser nula")
-    private LocalDateTime FechaDeNacimiento;
-	
+    private LocalDateTime fechaDeNacimiento;
 	@NotNull
 	private Long idCiudad;
 	
-	private Long NroPasaporte;
+	private Long nroPasaporte;
 	
-	private LocalDateTime FechaVencimientoPasaporte;
+	private LocalDateTime fechaVencimientoPasaporte;
 	
 	public Long getDni() {
 		return dni;
@@ -58,37 +61,50 @@ public class ClienteForm {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	public Long getIdDomicilio() {
-		return idDomicilio;
+
+	public String getDomicilio() {
+		return domicilio;
 	}
-	public void setIdDomicilio(Long idDomicilio) {
-		this.idDomicilio = idDomicilio;
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
 	}
+
+	public void setDni(Long dni) {
+		this.dni = dni;
+	}
+
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public LocalDateTime getFechaDeNacimiento() {
-		return FechaDeNacimiento;
+		return fechaDeNacimiento;
 	}
+
 	public void setFechaDeNacimiento(LocalDateTime fechaDeNacimiento) {
-		FechaDeNacimiento = fechaDeNacimiento;
+		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
+
 	public Long getNroPasaporte() {
-		return NroPasaporte;
+		return nroPasaporte;
 	}
+
 	public void setNroPasaporte(Long nroPasaporte) {
-		NroPasaporte = nroPasaporte;
+		this.nroPasaporte = nroPasaporte;
 	}
+
 	public LocalDateTime getFechaVencimientoPasaporte() {
-		return FechaVencimientoPasaporte;
+		return fechaVencimientoPasaporte;
 	}
+
 	public void setFechaVencimientoPasaporte(LocalDateTime fechaVencimientoPasaporte) {
-		FechaVencimientoPasaporte = fechaVencimientoPasaporte;
+		this.fechaVencimientoPasaporte = fechaVencimientoPasaporte;
 	}
+
 	public Long getIdCiudad() {
 		return idCiudad;
 	}
@@ -101,8 +117,11 @@ public class ClienteForm {
 		c.setDni(this.getDni());
 		c.setApellido(this.getApellido());
 		c.setNombre(this.getNombre());
+		c.setDomicilio(this.getDomicilio());
 		c.setEmail(this.getEmail());
 		c.setFechaDeNacimiento(this.getFechaDeNacimiento());
+		c.setNroPasaporte(this.getNroPasaporte());
+		c.setFechaVencimientoPasaporte(this.getFechaVencimientoPasaporte());
 		
 		return c;
 	}

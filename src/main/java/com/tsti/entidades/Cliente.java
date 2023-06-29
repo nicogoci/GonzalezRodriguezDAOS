@@ -10,23 +10,8 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 public class Cliente extends Persona{
-	@Id
-	@NotNull(message = "El DNI no puede ser nulo")
-	private Long dni;
 	
-	@NotNull
-	@Size(min = 1,max = 100, message = "Debe completar el apellido")
-	private String apellido;
-	
-	@NotNull
-	@Size(min = 1,max = 100, message = "Debe completar el nombre")
-	private String nombre;
-	
-	@Email(message = "El e-mail ingresado no es valido")
-	private String email;
-	
-	@ManyToOne
-	private Ciudad Domicilio;
+	private String domicilio;
 	
 	private LocalDateTime FechaDeNacimiento;
 	
@@ -34,39 +19,21 @@ public class Cliente extends Persona{
 	
 	private LocalDateTime FechaVencimientoPasaporte;
 	
-	
-	
-	public Long getDni() {
-		return dni;
+
+
+	public Cliente() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	public void setDni(Long dni) {
-		this.dni = dni;
+
+	public String getDomicilio() {
+		return domicilio;
 	}
-	public String getApellido() {
-		return apellido;
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
 	}
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-	public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public Ciudad getDomicilio() {
-		return Domicilio;
-	}
-	public void setDomicilio(Ciudad domicilio) {
-		Domicilio = domicilio;
-	}
+
 	public LocalDateTime getFechaDeNacimiento() {
 		return FechaDeNacimiento;
 	}
@@ -85,18 +52,16 @@ public class Cliente extends Persona{
 	public void setFechaVencimientoPasaporte(LocalDateTime fechaVencimientoPasaporte) {
 		FechaVencimientoPasaporte = fechaVencimientoPasaporte;
 	}
+
+
+
 	@Override
 	public String toString() {
-		return "Cliente [dni=" + dni + ", apellido=" + apellido + ", nombre=" + nombre + ", email=" + email
-				+ ", Domicilio=" + Domicilio + ", FechaDeNacimiento=" + FechaDeNacimiento + ", NroPasaporte="
+		return "Cliente [Domicilio=" + domicilio + ", FechaDeNacimiento=" + FechaDeNacimiento + ", NroPasaporte="
 				+ NroPasaporte + ", FechaVencimientoPasaporte=" + FechaVencimientoPasaporte + "]";
 	}
 	
-	
-	
-	
 
-	
 	
 }
 
